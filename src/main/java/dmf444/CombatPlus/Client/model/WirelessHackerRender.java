@@ -69,7 +69,8 @@ public class WirelessHackerRender extends TileEntitySpecialRenderer {
         this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
         GL11.glScaled(0.003, 0.003, 0.003);
-        GL11.glEnable(GL11.GL_BLEND);
+       // GL11.glEnable(GL11.GL_BLEND);
+        GL11.glColor3f(1.0f, 1.0f, 1.0f);
         Minecraft.getMinecraft().fontRenderer.drawString("hacking....", (int) x, (int) y, (int)z);
         //Tell it to stop rendering for both the PushMatrix's
         GL11.glDisable(GL11.GL_BLEND);
