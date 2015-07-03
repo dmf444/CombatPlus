@@ -2,7 +2,6 @@ package dmf444.CombatPlus.Client.model;
 
 
 import dmf444.CombatPlus.Common.TileEntity.TileInfiniteEnergy;
-import dmf444.CombatPlus.Common.TileEntity.WirelessEnergy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -66,10 +65,14 @@ public class WirelessEnergyRender extends TileEntitySpecialRenderer {
 
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("combatplus:textures/blocks/sphere.png"));
         float rangle = ticks;
-        float radians = (float) Math.toRadians(rangle);
+        float radians = (float) Math.toRadians(rangle * 1.12);
+        float scam = Math.max((float) ((float) (Math.sin(rangle / 7) * 0.2) + 0.2f), 0f);
+        float ram = Math.max((float) (-(((float) Math.sin(rangle / 7) * 0.2) / 2.0f) + 0.4), 0);
+        GL11.glTranslatef(0.0f, ram + 0.4f, 0.0f);
+        GL11.glScaled(scam, scam, scam);
 
-        float ztrans = (float) (Math.sin(radians));
-        float ytrans = (float) (Math.sin(radians));
+        float ztrans = (float) (Math.cos(radians) * 0.41);
+        float ytrans = (float) -(Math.sin(radians)* 0.41);
         GL11.glTranslatef(ztrans, 0, ytrans);
         GL11.glRotatef(rangle, 0, 1, 0);
         this.Smodel.render();
