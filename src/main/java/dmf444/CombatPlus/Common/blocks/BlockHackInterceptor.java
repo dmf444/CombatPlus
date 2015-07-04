@@ -25,11 +25,12 @@ public class BlockHackInterceptor extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float hitx, float hity, float hitz) {
-        if(player.getCurrentEquippedItem().getItem().equals(CombatPlus.upgradeCard)){
+        if(player.getCurrentEquippedItem().getItem().equals(CombatPlus.upgradeCard) && !TileInterception.getIntercept() && !TileInterception.getExposions()){
             TileInterception.setIntercept(true);
             return true;
-        } else if(player.getCurrentEquippedItem().getItem().equals(CombatPlus.explodeCard)){
+        } else if(player.getCurrentEquippedItem().getItem().equals(CombatPlus.explodeCard) && TileInterception.getIntercept() && !TileInterception.getExposions()){
             TileInterception.allowExplosions();
+            return true;
         }
         return false;
     }

@@ -25,6 +25,7 @@ public class TileSetTurretBase extends TileEnergyHandler {
     private int totalComplete;
     private static ItemStack cacheItem;
 
+
     public TileSetTurretBase(){
         Hack = false;
         this.storage = new EnergyStorage(40000);
@@ -123,5 +124,8 @@ public class TileSetTurretBase extends TileEnergyHandler {
 
     public void EXPLODE(EntityPlayer player) {
         worldObj.createExplosion(player, xCoord, yCoord, zCoord, 2.0F, true);
+    }
+    public int getTicks(){
+        return Ticks;
     }
 }

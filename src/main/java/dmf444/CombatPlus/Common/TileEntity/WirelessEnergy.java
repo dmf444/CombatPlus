@@ -4,6 +4,7 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.TileEnergyHandler;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 import openmodularturrets.tileentity.turretbase.TurretBase;
@@ -12,9 +13,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class WirelessEnergy extends TileEnergyHandler {
+public class WirelessEnergy extends TileEnergyHandler implements ITickTile {
 
     Chunk chuck;
+    private int ticks;
 
     public WirelessEnergy() {
         this.storage = new EnergyStorage(50000, 1500, 1000);
@@ -22,6 +24,7 @@ public class WirelessEnergy extends TileEnergyHandler {
 
     @Override
     public void updateEntity() {
+        ticks++;
         chuck = this.getWorldObj().getChunkFromBlockCoords(this.xCoord, this.zCoord);
         Map maz = chuck.chunkTileEntityMap;
         Iterator iterator = maz.values().iterator();
@@ -40,6 +43,15 @@ public class WirelessEnergy extends TileEnergyHandler {
                 }
             }
         }
+    }
+
+    public int getTicks(){
+        return ticks;
+    }
+
+    @Override
+    public ResourceLocation getTexture() {
+        return new ResourceLocation("combatplus:textures/blocks/WirelessEnergy.png");
     }
 
     @Override

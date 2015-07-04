@@ -5,6 +5,7 @@ import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.TileEnergyHandler;
 import dmf444.CombatPlus.Core.lib.CPLog;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 import openmodularturrets.tileentity.turretbase.TurretBase;
@@ -13,9 +14,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class TileInfiniteEnergy extends TileEntity{
+public class TileInfiniteEnergy extends TileEntity implements ITickTile{
 
     Chunk chuck;
+    private int ticks;
 
     public TileInfiniteEnergy() {
 
@@ -23,6 +25,7 @@ public class TileInfiniteEnergy extends TileEntity{
 
     @Override
     public void updateEntity(){
+        ticks++;
         chuck = this.getWorldObj().getChunkFromBlockCoords(this.xCoord, this.zCoord);
         Map maz = chuck.chunkTileEntityMap;
         Iterator iterator = maz.values().iterator();
@@ -41,4 +44,13 @@ public class TileInfiniteEnergy extends TileEntity{
     }
 
 
+    @Override
+    public int getTicks() {
+        return ticks;
+    }
+
+    @Override
+    public ResourceLocation getTexture() {
+        return new ResourceLocation("combatplus:textures/blocks/CreativeWirelessEnergy.png");
+    }
 }

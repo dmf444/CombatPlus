@@ -1,6 +1,7 @@
 package dmf444.CombatPlus.Client.model;
 
 
+import dmf444.CombatPlus.Common.TileEntity.TileSetTurretBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -8,6 +9,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+
+import java.text.DecimalFormat;
 
 public class WirelessHackerRender extends TileEntitySpecialRenderer {
 
@@ -27,6 +30,7 @@ public class WirelessHackerRender extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
+        TileSetTurretBase tile = (TileSetTurretBase) te;
         //The PushMatrix tells the renderer to "start" doing something.
         GL11.glPushMatrix();
         //This is setting the initial location.
@@ -68,12 +72,29 @@ public class WirelessHackerRender extends TileEntitySpecialRenderer {
         //A reference to your Model file. Again, very important.
         this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-        GL11.glScaled(0.003, 0.003, 0.003);
-       // GL11.glEnable(GL11.GL_BLEND);
-        GL11.glColor3f(1.0f, 1.0f, 1.0f);
-        Minecraft.getMinecraft().fontRenderer.drawString("hacking....", (int) x, (int) y, (int)z);
-        //Tell it to stop rendering for both the PushMatrix's
-        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPushMatrix();
+        if(tile.getHack()) {
+            String percentComplete = DecimalFormat.getPercentInstance().format(((double) tile.getTicks() / 250));
+            GL11.glScaled(0.003, 0.003, 0.003);
+            //GL11.glEnable(GL11.GL_BLEND);
+            GL11.glTranslated(-275, 285, 44);
+            GL11.glRotated(-40, 1, 0, 0);
+            GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
+            Minecraft.getMinecraft().fontRenderer.drawString("hacking....", te.xCoord, te.yCoord, te.zCoord);
+            GL11.glTranslated(0, 15, -4);
+            Minecraft.getMinecraft().fontRenderer.drawString(String.format("%s done", percentComplete), te.xCoord, te.yCoord, te.zCoord);
+            //Tell it to stop rendering for both the PushMatrix's
+            GL11.glDisable(GL11.GL_BLEND);
+        } else{
+            GL11.glScaled(0.003, 0.003, 0.003);
+            //GL11.glEnable(GL11.GL_BLEND);
+            GL11.glTranslated(-275, 285, 44);
+            GL11.glRotated(-40, 1, 0, 0);
+            GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
+            Minecraft.getMinecraft().fontRenderer.drawString("STANDBY", te.xCoord, te.yCoord, te.zCoord);
+        }
+        GL11.glPopMatrix();
+
         GL11.glPopMatrix();
         GL11.glPopMatrix();
     }

@@ -31,6 +31,7 @@ public class ItemCardChangerCreative extends Item {
         this.setUnlocalizedName("CreativeChangerCard");
         this.setCreativeTab(CreativeTabs.tabRedstone);
         this.setMaxStackSize(1);
+        this.setTextureName("combatplus:creativeHackCard");
     }
 
     public void onUpdate(ItemStack stack, World world, Entity entity, int number, boolean yn) {

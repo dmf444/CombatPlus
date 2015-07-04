@@ -17,6 +17,7 @@ public class ItemCardChangerNormal extends Item {
         this.setUnlocalizedName("NormalChangerCard");
         this.setCreativeTab(CreativeTabs.tabRedstone);
         this.setMaxStackSize(1);
+        this.setTextureName("combatplus:normalHackCard");
     }
 
     public void onUpdate(ItemStack stack, World world, Entity entity, int number, boolean yn) {

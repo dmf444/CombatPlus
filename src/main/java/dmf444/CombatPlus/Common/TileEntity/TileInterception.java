@@ -47,6 +47,14 @@ public class TileInterception extends TileEntity {
         intercept = interceptz;
     }
 
+    public static boolean getIntercept() {
+        return intercept;
+    }
+
+    public static boolean getExposions() {
+        return explodeHacker;
+    }
+
     @Override
     public void updateEntity(){
         chuck = this.getWorldObj().getChunkFromBlockCoords(this.xCoord, this.zCoord);

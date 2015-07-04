@@ -18,6 +18,7 @@ import dmf444.CombatPlus.Common.blocks.BlockWirelessEnergy;
 import dmf444.CombatPlus.proxy.CommonProxy;
 import dmf444.CombatPlus.Core.lib.ModInfo;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -49,6 +50,10 @@ public class CombatPlus {
         GameRegistry.registerItem(hackyCard, "hackyCard");
         hackyCardNormal = new ItemCardChangerNormal();
         GameRegistry.registerItem(hackyCardNormal, "hackyCardNormal");
+        upgradeCard = new Item().setCreativeTab(CreativeTabs.tabRedstone).setUnlocalizedName("disableCard").setTextureName("combatplus:InterceptionUpgrade");
+        GameRegistry.registerItem(upgradeCard, "disableCard");
+        explodeCard = new Item().setCreativeTab(CreativeTabs.tabRedstone).setUnlocalizedName("explosiveInterception").setTextureName("combatplus:ExplosiveUpgrade");
+        GameRegistry.registerItem(explodeCard, "explosiveInterception");
 
 
         wirelessBase = new BlockInfiniteEnergy().setBlockName("CreativeWirelessCharger");

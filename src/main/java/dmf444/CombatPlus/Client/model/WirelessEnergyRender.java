@@ -1,6 +1,7 @@
 package dmf444.CombatPlus.Client.model;
 
 
+import dmf444.CombatPlus.Common.TileEntity.ITickTile;
 import dmf444.CombatPlus.Common.TileEntity.TileInfiniteEnergy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -30,21 +31,21 @@ public class WirelessEnergyRender extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
-        ticks++;
+        ResourceLocation textures = null;
+        if(te instanceof ITickTile){
+            ITickTile tile = (ITickTile) te;
+            ticks = tile.getTicks();
+            textures = tile.getTexture();
+        }
         //The PushMatrix tells the renderer to "start" doing something.
         GL11.glPushMatrix();
+        //GL11.glEnable(GL11.GL_LIGHTING);
         //This is setting the initial location.
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
         this.adjustRotatePivotViaMeta(te.getWorldObj(), (int)x, (int)y, (int)z);
         //Use in 1.6.2  this
         //Use in 1.6.2  this
-        ResourceLocation textures = null;
-        if(te instanceof TileInfiniteEnergy){
-
-        }else {
-            textures = (new ResourceLocation("combatplus:textures/blocks/WirelessEnergy.png"));
-        }
         //the ':' is very important
         //binding the textures
         Minecraft.getMinecraft().renderEngine.bindTexture(textures);
@@ -54,36 +55,32 @@ public class WirelessEnergyRender extends TileEntitySpecialRenderer {
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
         //A reference to your Model file. Again, very important.
         this.model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        GL11.glPushMatrix();
 
+        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("combatplus:textures/blocks/sphere2.png"));
 
-        float zoffset = 0.871f;
-        float yoffset = 0.871f;
-        float xoffset = 0.0255f;
-        // GL11.glRotatef((float)short1, 0.0F, 1.0F, 0.0F);
-       // GL11.glRotatef(0F, 0, 1, 0);
-        //GL11.glTranslatef(xoffset + 0, yoffset + -0.95F, zoffset + -1.9F);
-
-        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("combatplus:textures/blocks/sphere.png"));
-        float rangle = ticks;
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        float rangle = ticks + 1;
         float radians = (float) Math.toRadians(rangle * 1.12);
-        float scam = Math.max((float) ((float) (Math.sin(rangle / 7) * 0.2) + 0.2f), 0f);
-        float ram = Math.max((float) (-(((float) Math.sin(rangle / 7) * 0.2) / 2.0f) + 0.4), 0);
-        GL11.glTranslatef(0.0f, ram + 0.4f, 0.0f);
-        GL11.glScaled(scam, scam, scam);
+        float scam = Math.max((float) ((float) (Math.sin(rangle / 7) * 0.2) + 0.25f), 0.25f);
+        float ram = Math.max((float) (-(((float) Math.sin(rangle / 7) * 0.2) / 2.0f) + 0.4), 0.9f);
+        GL11.glTranslatef(0.0f, ram - 0.25f, 0.0f);
+        GL11.glScaled(scam, 0.9 - 0.45, scam);
 
-        float ztrans = (float) (Math.cos(radians) * 0.41);
-        float ytrans = (float) -(Math.sin(radians)* 0.41);
+        float ztrans = (float) (Math.cos(radians) * 0.00);
+        float ytrans = (float) -(Math.sin(radians)* 0.01);
         GL11.glTranslatef(ztrans, 0, ytrans);
         GL11.glRotatef(rangle, 0, 1, 0);
         this.Smodel.render();
+
         //Tell it to stop rendering for both the PushMatrix's
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glPopMatrix();
         GL11.glPopMatrix();
         GL11.glPopMatrix();
 
-        if(ticks >= 360){
-            ticks = 0;
-        }
+
     }
 }
