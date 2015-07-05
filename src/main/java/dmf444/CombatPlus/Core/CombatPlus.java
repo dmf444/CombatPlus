@@ -27,7 +27,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 
-@Mod(modid = ModInfo.MODID, version = ModInfo.VERSION)
+@Mod(modid = ModInfo.MODID, version = ModInfo.VERSION, name = "Combat Plus", dependencies = "openmodularturrets@[1.7.10-2.0.1-137,)")
 public class CombatPlus {
     @Mod.Instance(value = "CombatPlus")
     public static CombatPlus instance;
