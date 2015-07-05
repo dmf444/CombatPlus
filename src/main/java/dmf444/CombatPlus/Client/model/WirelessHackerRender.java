@@ -88,13 +88,12 @@ public class WirelessHackerRender extends TileEntitySpecialRenderer {
         } else{
             GL11.glScaled(0.003, 0.003, 0.003);
             //GL11.glEnable(GL11.GL_BLEND);
-            GL11.glTranslated(-275, 285, 44);
+            GL11.glTranslated(-260, 285, 44);
             GL11.glRotated(-40, 1, 0, 0);
             GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
             Minecraft.getMinecraft().fontRenderer.drawString("STANDBY", te.xCoord, te.yCoord, te.zCoord);
         }
         GL11.glPopMatrix();
-
         GL11.glPopMatrix();
         GL11.glPopMatrix();
     }

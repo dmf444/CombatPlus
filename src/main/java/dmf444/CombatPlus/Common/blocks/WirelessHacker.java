@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -84,5 +85,9 @@ public class WirelessHacker extends BlockContainer {
         super.onBlockAdded(world, x, y, z);
         this.setDefaultDirection(world, x, y, z, entity);
 
+    }
+
+    public void registerBlockIcons(IIconRegister icon) {
+        this.blockIcon = icon.registerIcon("combatplus:WirelessHackerItem");
     }
 }

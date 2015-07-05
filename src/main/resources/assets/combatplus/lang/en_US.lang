@@ -1,0 +1,9 @@
+tile.CreativeWirelessCharger.name=Creative Wireless Turret Charger
+tile.TurretHacker.name=Turret Hacking Station
+tile.WirelessCharger.name=Wireless Turret Charger
+tile.interceptor.name=Hack Interceptor
+
+item.CreativeChangerCard.name=Creative Hacking Card
+item.NormalChangerCard.name=Hacking Card
+item.disableCard.name=Upgrade - Disable
+item.explosiveInterception.name=Upgrade - Explosion

@@ -4,6 +4,7 @@ import dmf444.CombatPlus.Common.TileEntity.TileInterception;
 import dmf444.CombatPlus.Core.CombatPlus;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -13,7 +14,7 @@ import net.minecraft.world.World;
 public class BlockHackInterceptor extends BlockContainer {
 
 
-    protected BlockHackInterceptor() {
+    public BlockHackInterceptor() {
         super(Material.circuits);
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
@@ -34,4 +35,23 @@ public class BlockHackInterceptor extends BlockContainer {
         }
         return false;
     }
+
+    @Override
+    public int getRenderType() {
+        return -1;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    public void registerBlockIcons(IIconRegister icon) {
+        this.blockIcon = icon.registerIcon("combatplus:InterceptorItem");
+    }
+
 }

@@ -4,6 +4,7 @@ import dmf444.CombatPlus.Common.TileEntity.TileInfiniteEnergy;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -39,5 +40,9 @@ public class BlockInfiniteEnergy extends BlockContainer {
 
     public boolean renderAsNormalBlock() {
         return false;
+    }
+
+    public void registerBlockIcons(IIconRegister icon) {
+        this.blockIcon = icon.registerIcon("combatplus:CreativeWirelessEnergyItem");
     }
 }

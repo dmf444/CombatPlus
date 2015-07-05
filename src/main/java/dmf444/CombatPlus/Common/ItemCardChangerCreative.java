@@ -23,6 +23,7 @@ import net.minecraftforge.common.DimensionManager;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 
 public class ItemCardChangerCreative extends Item {
@@ -68,5 +69,17 @@ public class ItemCardChangerCreative extends Item {
     protected Scoreboard getBoard(World world)
     {
         return world.getScoreboard();
+    }
+
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean yn) {
+        if(player.isInvisible()) {
+            list.add("Only works when two teams are registered in the scoreboard,");
+            list.add("and the player using the card is on one of those teams");
+            list.add("This will set the entire team to access the turrets");
+        } else{
+            list.add("Become invisible for more info");
+        }
     }
 }
