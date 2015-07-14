@@ -3,7 +3,7 @@
   "modid": "combatplus",
   "name": "Combat Plus",
   "description": "Small addon mod to OpenModularTurrets that allow for hacking and wireless power",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",

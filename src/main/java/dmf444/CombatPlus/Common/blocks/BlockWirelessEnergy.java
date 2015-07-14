@@ -17,7 +17,7 @@ public class BlockWirelessEnergy extends BlockContainer {
 
     public BlockWirelessEnergy() {
         super(Material.iron);
-
+        this.blockHardness = 2.0F;
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 

@@ -14,7 +14,7 @@ public class BlockInfiniteEnergy extends BlockContainer {
 
     public BlockInfiniteEnergy() {
         super(Material.iron);
-
+        this.blockHardness = 2.0F;
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 

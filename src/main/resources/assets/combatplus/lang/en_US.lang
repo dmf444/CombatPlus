@@ -2,6 +2,7 @@ tile.CreativeWirelessCharger.name=Creative Wireless Turret Charger
 tile.TurretHacker.name=Turret Hacking Station
 tile.WirelessCharger.name=Wireless Turret Charger
 tile.interceptor.name=Hack Interceptor
+tile.EnergyCreator.name=Redstone Energy Producer
 
 item.CreativeChangerCard.name=Creative Hacking Card
 item.NormalChangerCard.name=Hacking Card

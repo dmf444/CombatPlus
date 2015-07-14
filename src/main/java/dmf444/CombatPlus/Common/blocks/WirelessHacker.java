@@ -22,6 +22,7 @@ public class WirelessHacker extends BlockContainer {
         super(Material.iron);
         this.setCreativeTab(CreativeTabs.tabRedstone);
         this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 0.65f, 0.82f);
+        this.blockHardness = 2.0F;
     }
 
     @Override

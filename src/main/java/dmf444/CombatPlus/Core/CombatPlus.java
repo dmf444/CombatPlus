@@ -2,23 +2,23 @@ package dmf444.CombatPlus.Core;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import dmf444.CombatPlus.Common.GuiHandler;
 import dmf444.CombatPlus.Common.ItemCardChangerCreative;
 import dmf444.CombatPlus.Common.ItemCardChangerNormal;
+import dmf444.CombatPlus.Common.TileEntity.TileEnergyCreator;
 import dmf444.CombatPlus.Common.TileEntity.TileInfiniteEnergy;
 import dmf444.CombatPlus.Common.TileEntity.TileSetTurretBase;
 import dmf444.CombatPlus.Common.TileEntity.WirelessEnergy;
-import dmf444.CombatPlus.Common.blocks.BlockHackInterceptor;
-import dmf444.CombatPlus.Common.blocks.BlockInfiniteEnergy;
-import dmf444.CombatPlus.Common.blocks.WirelessHacker;
-import dmf444.CombatPlus.Common.blocks.BlockWirelessEnergy;
+import dmf444.CombatPlus.Common.blocks.*;
 import dmf444.CombatPlus.proxy.CommonProxy;
 import dmf444.CombatPlus.Core.lib.ModInfo;
-import li.cil.oc.api.prefab.ItemStackTabIconRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -27,9 +27,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 
-@Mod(modid = ModInfo.MODID, version = ModInfo.VERSION, name = "Combat Plus", dependencies = "openmodularturrets@[1.7.10-2.0.1-137,)")
+@Mod(modid = ModInfo.MODID, version = ModInfo.VERSION, name = "Combat Plus", dependencies = "required-after:openmodularturrets@[1.7.10-2.0.1-137,)")
 public class CombatPlus {
-    @Mod.Instance(value = "CombatPlus")
+
+    @Instance(value = "combatplus")
     public static CombatPlus instance;
 
     @SidedProxy(clientSide= ModInfo.Clientproxy, serverSide= ModInfo.Serverproxy)
@@ -41,6 +42,7 @@ public class CombatPlus {
     public static Block CardHackTerminal;
     public static Block wirelessEnergy;
     public static Block hackInterceptor;
+    public static Block energyCreator;
 
     public static Item hackyCard;
     public static Item hackyCardNormal;
@@ -60,6 +62,8 @@ public class CombatPlus {
         GameRegistry.registerItem(explodeCard, "explosiveInterception");
 
 
+        energyCreator = new BlockEnergyCreator().setBlockName("EnergyCreator");
+        GameRegistry.registerBlock(energyCreator, "EnergyCreator");
         wirelessBase = new BlockInfiniteEnergy().setBlockName("CreativeWirelessCharger");
         GameRegistry.registerBlock(wirelessBase, "infiniteTile");
         CardHackTerminal = new WirelessHacker().setBlockName("TurretHacker");
@@ -70,11 +74,14 @@ public class CombatPlus {
         GameRegistry.registerBlock(hackInterceptor, "interceptor");
 
 
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
-
+        GameRegistry.registerTileEntity(TileEnergyCreator.class, "EnergyCreator");
         GameRegistry.registerTileEntity(TileSetTurretBase.class, "CardCheat");
         GameRegistry.registerTileEntity(TileInfiniteEnergy.class, "infiniteTile");
         GameRegistry.registerTileEntity(WirelessEnergy.class, "wirelessEnergy");
+
+
 
     }
 

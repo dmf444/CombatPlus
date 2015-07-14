@@ -114,6 +114,9 @@ public class TileSetTurretBase extends TileEnergyHandler {
 
     private void removeTrustedPlayers(TurretBase tile){
         for(int d = 0; d < tile.getTrustedPlayers().size(); d++){
+            tile.getTrustedPlayers().get(d).setAdmin(false);
+            tile.getTrustedPlayers().get(d).setCanChangeTargeting(false);
+            tile.getTrustedPlayers().get(d).setCanOpenGUI(false);
             tile.removeTrustedPlayer(tile.getTrustedPlayers().get(d).getName());
         }
     }
