@@ -3,6 +3,7 @@ package dmf444.CombatPlus.Common.TileEntity;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.TileEnergyHandler;
+import dmf444.CombatPlus.Core.ConfigHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -24,7 +25,9 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
     private static final int REDSTONE = 1;
     private static final int BLOCK = 2;
 
-    private static final int ENERGY_CREATED = 1500;
+    private static final int ENERGY_CREATED = ConfigHandler.RFperT;
+    private static final Double BLOCK_MULTIPLIER = ConfigHandler.Multiplyer;
+    private static final int TICKS_TO_WAIT = ConfigHandler.tickWait;
 
     private int ticks = 0;
 
@@ -70,7 +73,7 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
     public void updateEntity() {
         ticks++;
 
-        if(ticks == 150) {
+        if(ticks == TICKS_TO_WAIT) {
             if (worldObj.getBlock(xCoord, yCoord - 1, zCoord) == Blocks.lava && this.storage.getEnergyStored() < 50000) {
                 int Type = testItems(this.inv[0]);
                 if (Type != EMPTY) {
@@ -79,7 +82,7 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
                         storage.receiveEnergy(ENERGY_CREATED, false);
                     } else if (Type == BLOCK) {
                         this.decrStackSize(0, 1);
-                        storage.receiveEnergy((int) (ENERGY_CREATED * 9.5), false);
+                        storage.receiveEnergy((int) (ENERGY_CREATED * BLOCK_MULTIPLIER), false);
                     }
                 } else if (testItems(this.inv[1]) != EMPTY) {
                     Type = testItems(this.inv[1]);
@@ -88,7 +91,7 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
                         storage.receiveEnergy(ENERGY_CREATED, false);
                     } else if (Type == BLOCK) {
                         this.decrStackSize(1, 1);
-                        storage.receiveEnergy((int) (ENERGY_CREATED * 9.5), false);
+                        storage.receiveEnergy((int) (ENERGY_CREATED * BLOCK_MULTIPLIER), false);
                     }
                 } else if (testItems(this.inv[2]) != EMPTY) {
                     Type = testItems(this.inv[2]);
@@ -97,7 +100,7 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
                         storage.receiveEnergy(ENERGY_CREATED, false);
                     } else if (Type == BLOCK) {
                         this.decrStackSize(2, 1);
-                        storage.receiveEnergy((int) (ENERGY_CREATED * 9.5), false);
+                        storage.receiveEnergy((int) (ENERGY_CREATED * BLOCK_MULTIPLIER), false);
                     }
                 }
             }

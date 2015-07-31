@@ -52,6 +52,8 @@ public class CombatPlus {
     @Mod.EventHandler
     public void init(FMLPreInitializationEvent event)
     {
+        ConfigHandler.init(event.getSuggestedConfigurationFile());
+
         hackyCard = new ItemCardChangerCreative();
         GameRegistry.registerItem(hackyCard, "hackyCard");
         hackyCardNormal = new ItemCardChangerNormal();
