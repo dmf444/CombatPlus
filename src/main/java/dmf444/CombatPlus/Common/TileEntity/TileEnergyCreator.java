@@ -2,6 +2,7 @@ package dmf444.CombatPlus.Common.TileEntity;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.TileEnergyHandler;
 import dmf444.CombatPlus.Core.ConfigHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,12 +15,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 
 
-
-public class TileEnergyCreator extends TileEnergyHandler implements ISidedInventory{
+public class TileEnergyCreator extends TileEnergyHandler implements ISidedInventory, ITickable{
 
     private static final int EMPTY = 0;
     private static final int REDSTONE = 1;
@@ -53,7 +54,7 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
 
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
 
         NBTTagList itemList = new NBTTagList();
@@ -67,14 +68,15 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
             }
         }
         tagCompound.setTag("Inventory", itemList);
+        return tagCompound;
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         ticks++;
 
         if(ticks == TICKS_TO_WAIT) {
-            if (worldObj.getBlock(xCoord, yCoord - 1, zCoord) == Blocks.lava && this.storage.getEnergyStored() < 50000) {
+            if (worldObj.getBlockState(this.getPos().down()).getBlock() == Blocks.LAVA && this.storage.getEnergyStored() < 50000) {
                 int Type = testItems(this.inv[0]);
                 if (Type != EMPTY) {
                     if (Type == REDSTONE) {
@@ -106,9 +108,9 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
             }
             ticks = 0;
         }
-        if(worldObj.getTileEntity(xCoord, yCoord + 1,zCoord) instanceof IEnergyHandler && this.storage.getEnergyStored() > 1500){
-            IEnergyHandler handler = (IEnergyHandler) worldObj.getTileEntity(xCoord, yCoord +1, zCoord);
-            handler.receiveEnergy(ForgeDirection.DOWN, 1500, false);
+        if(worldObj.getTileEntity(pos.up()) instanceof IEnergyReceiver && this.storage.getEnergyStored() > 1500){
+            IEnergyReceiver handler = (IEnergyReceiver) worldObj.getTileEntity(getPos().up());
+            handler.receiveEnergy(EnumFacing.DOWN, 1500, false);
             this.storage.extractEnergy(1500, false);
         }
     }
@@ -117,9 +119,9 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
     private int testItems(ItemStack itemstack) {
         if (itemstack != null) {
             Item item = itemstack.getItem();
-            if (item.equals(Items.redstone)) {
+            if (item.equals(Items.REDSTONE)) {
                 return REDSTONE;
-            } else if (item.equals(Item.getItemFromBlock(Blocks.redstone_block))) {
+            } else if (item.equals(Item.getItemFromBlock(Blocks.REDSTONE_BLOCK))) {
                 return BLOCK;
             } else {
                 return EMPTY;
@@ -129,29 +131,34 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
     }
 
     @Override
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
         return 0;
     }
     @Override
-    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-        if(from == ForgeDirection.UP)
+    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
+        if(from == EnumFacing.UP)
             return storage.extractEnergy(maxExtract, simulate);
         else
             return 0;
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
         NBTTagCompound syncData = new NBTTagCompound();
         syncData.setInteger("Storage", storage.getEnergyStored());
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, syncData);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, syncData);
+    }
+
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity pkt)
     {
-        storage.setEnergyStored(pkt.func_148857_g().getInteger("Storage"));
+        storage.setEnergyStored(pkt.getNbtCompound().getInteger("Storage"));
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,17 +174,17 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
     private static final int[] slots_sides = new int[] {2, 1, 0};
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
-        return side == 0 ? slots_bottom : (side == 1 ? slots_top : slots_sides);
+    public int[] getSlotsForFace(EnumFacing side) {
+        return side.getIndex() == 0 ? slots_bottom : (side.getIndex() == 1 ? slots_top : slots_sides);
     }
 
     @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return side != ForgeDirection.UP.ordinal();
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return direction != EnumFacing.UP;
     }
 
     @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
         return false;
     }
 
@@ -209,7 +216,7 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
 
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
+    public ItemStack removeStackFromSlot(int slot) {
         ItemStack stack = getStackInSlot(slot);
         if (stack != null) {
             setInventorySlotContents(slot, null);
@@ -228,12 +235,12 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
 
 
     @Override
-    public String getInventoryName() {
+    public String getName() {
         return "EnergyCreator";
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
 
@@ -248,13 +255,33 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory(EntityPlayer e) {}
 
     @Override
-    public void closeInventory() {}
+    public void closeInventory(EntityPlayer e) {}
 
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack stack) {
-        return stack.getItem() == Items.redstone || stack.getItem() == Item.getItemFromBlock(Blocks.redstone_block);
+        return stack.getItem() == Items.REDSTONE || stack.getItem() == Item.getItemFromBlock(Blocks.REDSTONE_BLOCK);
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

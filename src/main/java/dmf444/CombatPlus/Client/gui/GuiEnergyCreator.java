@@ -1,13 +1,13 @@
 package dmf444.CombatPlus.Client.gui;
 
 
-import dmf444.CombatPlus.Common.TileEntity.TileEnergyCreator;
-import dmf444.CombatPlus.Common.container.ContainerEnergyCreator;
+import dmf444.CombatPlus.Common.TileEntity.*;
+import dmf444.CombatPlus.Common.container.*;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 public class GuiEnergyCreator extends GuiContainer {
@@ -25,7 +25,7 @@ public class GuiEnergyCreator extends GuiContainer {
         //the parameters for drawString are: string, x, y, color
         fontRendererObj.drawString("Redstone Liquifactor", 8, 6, 4210752);
         //draws "Inventory" or your regional equivalent
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
+        fontRendererObj.drawString(I18n.format("container.inventory"), 8, ySize - 96 + 2, 4210752);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class GuiEnergyCreator extends GuiContainer {
     		sizetodraww and h : how large to draw
     		*/
         // Example: this.drawTexturedModalRect(100, 100, 256, 0, 50, 10, 50, this.tileentity.charge)
-        int drawheight = (te.getEnergyStored(ForgeDirection.UNKNOWN) * 42) / te.getMaxEnergyStored(ForgeDirection.UNKNOWN);
+        int drawheight = (te.getEnergyStored(EnumFacing.DOWN) * 42) / te.getMaxEnergyStored(EnumFacing.DOWN);
             this.drawTexturedModalRect(x + 140, y + 21, 176, 0, 14, drawheight);
 
 }

@@ -10,15 +10,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
-import openmodularturrets.tileentity.turretbase.TurretBase;
+import omtteam.openmodularturrets.tileentity.TurretBase;
+
 
 import java.util.Iterator;
 import java.util.Map;
 
 
-public class TileSetTurretBase extends TileEnergyHandler {
+public class TileSetTurretBase extends TileEnergyHandler implements ITickable {
 
     private int Ticks;
     private static boolean Hack;
@@ -31,11 +33,11 @@ public class TileSetTurretBase extends TileEnergyHandler {
         this.storage = new EnergyStorage(40000);
     }
 
-    public void updateEntity(){
+    public void update(){
         if(Hack && this.storage.getEnergyStored() >= 1500){
 
             this.Ticks++;
-            this.extractEnergy(ForgeDirection.UNKNOWN, 1500, false);
+            this.extractEnergy(EnumFacing.DOWN, 1500, false);
             CPLog.fatal(Ticks);
             if(Ticks >= 50){
                 totalComplete += 1;
@@ -52,8 +54,8 @@ public class TileSetTurretBase extends TileEnergyHandler {
     }
 
     @Override
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        if (from == ForgeDirection.DOWN)
+    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+        if (from == EnumFacing.DOWN)
             return storage.receiveEnergy(maxReceive, simulate);
         else
             return -1;
@@ -72,8 +74,8 @@ public class TileSetTurretBase extends TileEnergyHandler {
                 NBTTagCompound tag = items.getTagCompound();
                 String names = tag.getString("names");
                 String[] name = names.split("~");
-                Chunk chuck = this.getWorldObj().getChunkFromBlockCoords(this.xCoord, this.zCoord);
-                Map maz = chuck.chunkTileEntityMap;
+                Chunk chuck = this.getWorld().getChunkFromBlockCoords(this.getPos());
+                Map maz = chuck.getTileEntityMap();
                 Iterator iterator = maz.values().iterator();
                 while (iterator.hasNext()) {
                     //CPLog.error("YUP");
@@ -91,8 +93,8 @@ public class TileSetTurretBase extends TileEnergyHandler {
         } else if(items.getItem().equals(CombatPlus.hackyCardNormal)){
             NBTTagCompound tag = items.getTagCompound();
             String name = tag.getString("names");
-            Chunk chuck = this.getWorldObj().getChunkFromBlockCoords(this.xCoord, this.zCoord);
-            Map maz = chuck.chunkTileEntityMap;
+            Chunk chuck = this.getWorld().getChunkFromBlockCoords(this.getPos());
+            Map maz = chuck.getTileEntityMap();
             Iterator iterator = maz.values().iterator();
             while (iterator.hasNext()) {
                 TileEntity tileEntity = (TileEntity) iterator.next();
@@ -126,7 +128,7 @@ public class TileSetTurretBase extends TileEnergyHandler {
     }
 
     public void EXPLODE(EntityPlayer player) {
-        worldObj.createExplosion(player, xCoord, yCoord, zCoord, 2.0F, true);
+        worldObj.createExplosion(player, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 2.0F, true);
     }
     public int getTicks(){
         return Ticks;

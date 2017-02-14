@@ -15,14 +15,14 @@ public class ItemCardChangerNormal extends Item {
 
     public ItemCardChangerNormal() {
         this.setUnlocalizedName("NormalChangerCard");
-        this.setCreativeTab(CreativeTabs.tabRedstone);
+        this.setCreativeTab(CreativeTabs.REDSTONE);
         this.setMaxStackSize(1);
-        this.setTextureName("combatplus:normalHackCard");
+        //this.setTextureName("combatplus:normalHackCard");
     }
 
     public void onUpdate(ItemStack stack, World world, Entity entity, int number, boolean yn) {
         //CPLog.fatal(entity.getCommandSenderName());
-        this.loopString(entity.getCommandSenderName(), stack);
+        this.loopString(entity.getName(), stack);
     }
 
     private void loopString(String names, ItemStack itemStack) {

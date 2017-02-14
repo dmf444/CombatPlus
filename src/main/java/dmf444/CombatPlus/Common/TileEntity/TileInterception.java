@@ -5,19 +5,18 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
-import openmodularturrets.tileentity.turretbase.TurretBase;
+import omtteam.openmodularturrets.tileentity.TurretBase;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 
-public class TileInterception extends TileEntity {
+public class TileInterception extends TileEntity implements ITickable{
 
     Chunk chuck;
     private static EntityPlayer owner;
@@ -26,14 +25,14 @@ public class TileInterception extends TileEntity {
     private static boolean explodeHacker;
 
     public TileInterception() {
-        world = this.getWorldObj();
+        world = this.getWorld();
     }
 
     public static void setOwner(String player){
         List players = world.playerEntities;
         for(int i = 0; i <= players.size(); i++){
             EntityPlayer player1 = (EntityPlayer) players.get(i);
-            if(player1.getCommandSenderName() == player){
+            if(player1.getName() == player){
                 owner = player1;
             }
         }
@@ -56,9 +55,9 @@ public class TileInterception extends TileEntity {
     }
 
     @Override
-    public void updateEntity(){
-        chuck = this.getWorldObj().getChunkFromBlockCoords(this.xCoord, this.zCoord);
-        Map maz = chuck.chunkTileEntityMap;
+    public void update(){
+        chuck = this.getWorld().getChunkFromBlockCoords(this.getPos());
+        Map maz = chuck.getTileEntityMap();
         Iterator iterator = maz.values().iterator();
 
         while(iterator.hasNext()) {
@@ -67,7 +66,7 @@ public class TileInterception extends TileEntity {
                 if(tileEntity instanceof TileSetTurretBase){
                     TileSetTurretBase handler = (TileSetTurretBase) tileEntity;
                     if(handler.getHack() && !this.intercept) {
-                        new ChatComponentTranslation("WARNING: %s, Wireless hacker found at x:" + handler.xCoord + " y: " + handler.yCoord + " z: " + handler.zCoord, new Object[] {getOwner().func_145748_c_()});
+                        new TextComponentTranslation("WARNING: %s, Wireless hacker found at x:" + handler.getPos().getX() + " y: " + handler.getPos().getY() + " z: " + handler.getPos().getZ(), new Object[] {getOwner().getDisplayNameString()});
                     }else if(handler.getHack() && this.intercept){
                         handler.stopHack();
                     } else if(handler.getHack() && this.explodeHacker){

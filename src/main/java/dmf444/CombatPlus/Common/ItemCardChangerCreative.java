@@ -1,7 +1,6 @@
 package dmf444.CombatPlus.Common;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import dmf444.CombatPlus.Core.CombatPlus;
 import dmf444.CombatPlus.Core.lib.CPLog;
 import net.minecraft.client.Minecraft;
@@ -20,6 +19,8 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -30,9 +31,9 @@ public class ItemCardChangerCreative extends Item {
 
     public ItemCardChangerCreative(){
         this.setUnlocalizedName("CreativeChangerCard");
-        this.setCreativeTab(CreativeTabs.tabRedstone);
+        this.setCreativeTab(CreativeTabs.REDSTONE);
         this.setMaxStackSize(1);
-        this.setTextureName("combatplus:creativeHackCard");
+        //this.setTextureName("combatplus:creativeHackCard");
     }
 
     public void onUpdate(ItemStack stack, World world, Entity entity, int number, boolean yn) {

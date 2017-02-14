@@ -1,37 +1,35 @@
 buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-    }
+	repositories {
+		jcenter()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+		maven {
+			name = "jei"
+			url = "http://dvs1.progwml6.com/files/maven"
+		}
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+	}
 }
 
-apply plugin: 'forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "1.0.2"
 group= "dmf444.CombatPlus" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "CombatPlus"
 
 minecraft {
-    version = "1.7.10-10.13.4.1481-1.7.10"
+    version = "1.10.2-12.18.2.2099" 
     runDir = "eclipse"
+	mappings = "snapshot_20160518"
 }
 
 dependencies {
-    compile files("libs/OpenModularTurrets-1.7.10-2.0.1-137.jar")
-    compile files("libs/OpenComputers-MC1.7.10-1.5.13.28-universal.jar")
-    compile files("libs/Thaumcraft-1.7.10-4.2.3.5.jar")
-    compile files("libs/ComputerCraft1.73.jar")
-    //compile files("CodeChickenCore-1.7.10-1.0.4.29-dev.jar")
+    compile files("libs/openmodularturrets-1.10.2-3.0.0-90.jar")
+    compile files("libs/omlib-1.10.2-3.0.0-60.jar")
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"

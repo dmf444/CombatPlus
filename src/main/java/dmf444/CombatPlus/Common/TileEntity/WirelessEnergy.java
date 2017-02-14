@@ -2,18 +2,20 @@ package dmf444.CombatPlus.Common.TileEntity;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.TileEnergyHandler;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
-import openmodularturrets.tileentity.turretbase.TurretBase;
+import omtteam.openmodularturrets.tileentity.TurretBase;
 
 import java.util.Iterator;
 import java.util.Map;
 
 
-public class WirelessEnergy extends TileEnergyHandler implements ITickTile {
+public class WirelessEnergy extends TileEnergyHandler implements ITickTile, ITickable {
 
     Chunk chuck;
     private int ticks;
@@ -23,21 +25,22 @@ public class WirelessEnergy extends TileEnergyHandler implements ITickTile {
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         ticks++;
-        chuck = this.getWorldObj().getChunkFromBlockCoords(this.xCoord, this.zCoord);
-        Map maz = chuck.chunkTileEntityMap;
+        chuck = this.getWorld().getChunkFromBlockCoords(this.getPos());
+        Map maz = chuck.getTileEntityMap();
         Iterator iterator = maz.values().iterator();
 
-        while (iterator.hasNext()) {
+        while(iterator.hasNext()) {
             TileEntity tileEntity = (TileEntity) iterator.next();
-            if (tileEntity instanceof TurretBase) {
-                if (tileEntity instanceof IEnergyHandler) {
+            if(tileEntity instanceof TurretBase){
+                if(tileEntity instanceof IEnergyHandler && tileEntity instanceof IEnergyReceiver){
                     IEnergyHandler handler = (IEnergyHandler) tileEntity;
-                    if (handler.getEnergyStored(ForgeDirection.UNKNOWN) <= handler.getMaxEnergyStored(ForgeDirection.UNKNOWN) && this.getEnergyStored(ForgeDirection.UNKNOWN) > 0) {
+                    IEnergyReceiver hand = (IEnergyReceiver) tileEntity;
+                    if (handler.getEnergyStored(EnumFacing.DOWN) <= handler.getMaxEnergyStored(EnumFacing.DOWN) && this.getEnergyStored(EnumFacing.DOWN) > 0) {
                         if(this.storage.getEnergyStored() - this.storage.getMaxExtract() >= 0) {
-                            handler.receiveEnergy(ForgeDirection.UP, this.storage.getMaxExtract(), false);
-                            this.extractEnergy(ForgeDirection.UNKNOWN, this.storage.getMaxExtract(), false);
+                            hand.receiveEnergy(EnumFacing.UP, this.storage.getMaxExtract(), false);
+                            this.extractEnergy(EnumFacing.DOWN, this.storage.getMaxExtract(), false);
                         }
                     }
                 }
@@ -55,8 +58,8 @@ public class WirelessEnergy extends TileEnergyHandler implements ITickTile {
     }
 
     @Override
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        if(from == ForgeDirection.DOWN) {
+    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+        if(from == EnumFacing.DOWN) {
             return storage.receiveEnergy(maxReceive, simulate);
         } else {return 0;}
     }

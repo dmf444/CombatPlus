@@ -1,13 +1,10 @@
 package dmf444.CombatPlus.proxy;
 
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
+
 import dmf444.CombatPlus.Client.model.*;
 import dmf444.CombatPlus.Common.TileEntity.*;
-import dmf444.CombatPlus.Core.CombatPlus;
-import li.cil.oc.common.block.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy{
 

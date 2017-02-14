@@ -16,8 +16,8 @@ public class BlockEnergyCreator extends BlockContainer{
 
 
     public BlockEnergyCreator() {
-        super(Material.circuits);
-        this.setCreativeTab(CreativeTabs.tabRedstone);
+        super(Material.CIRCUITS);
+        this.setCreativeTab(CreativeTabs.REDSTONE);
         this.blockHardness = 2.0F;
     }
 

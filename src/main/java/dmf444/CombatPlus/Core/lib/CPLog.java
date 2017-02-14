@@ -1,6 +1,6 @@
 package dmf444.CombatPlus.Core.lib;
 
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
 
