@@ -2,10 +2,9 @@ package dmf444.CombatPlus.Common.TileEntity;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.TileEnergyHandler;
-import dmf444.CombatPlus.Core.CombatPlus;
+import dmf444.CombatPlus.CombatPlus;
 import dmf444.CombatPlus.Core.lib.CPLog;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityTNTPrimed;
+import dmf444.CombatPlus.init.ItemRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -69,7 +68,7 @@ public class TileSetTurretBase extends TileEnergyHandler implements ITickable {
     public static boolean getHack(){return Hack;}
 
     public void addTeamtoAccepted(ItemStack items){
-        if((items.getItem()).equals(CombatPlus.hackyCard)) {
+        if((items.getItem()).equals(ItemRegistry.TEAM_HACKING_CARD)) {
             if (items.hasTagCompound()) {
                 NBTTagCompound tag = items.getTagCompound();
                 String names = tag.getString("names");
@@ -90,7 +89,7 @@ public class TileSetTurretBase extends TileEnergyHandler implements ITickable {
 
                 }
             }
-        } else if(items.getItem().equals(CombatPlus.hackyCardNormal)){
+        } else if(items.getItem().equals(ItemRegistry.HACKING_CARD)){
             NBTTagCompound tag = items.getTagCompound();
             String name = tag.getString("names");
             Chunk chuck = this.getWorld().getChunkFromBlockCoords(this.getPos());

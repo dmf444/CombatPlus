@@ -8,13 +8,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
 
 
 public class ItemCardChangerNormal extends Item {
 
     public ItemCardChangerNormal() {
         this.setUnlocalizedName("NormalChangerCard");
+        this.setRegistryName("hackyCardNormal");
         this.setCreativeTab(CreativeTabs.REDSTONE);
         this.setMaxStackSize(1);
         //this.setTextureName("combatplus:normalHackCard");
@@ -25,15 +29,23 @@ public class ItemCardChangerNormal extends Item {
         this.loopString(entity.getName(), stack);
     }
 
-    private void loopString(String names, ItemStack itemStack) {
+    private void loopString(String name, ItemStack itemStack) {
         if (!itemStack.hasTagCompound()) {
             itemStack.setTagCompound(new NBTTagCompound());
         }
-        String carlos = names;
-        if (carlos != null) {
+        if (name != null) {
             NBTTagCompound tag = itemStack.getTagCompound();
-            tag.setString("names", carlos);
+            tag.setString("names", name);
             //CPLog.error(carlos);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    {
+        if(stack.hasTagCompound()){
+            String name = stack.getTagCompound().getString("names");
+            tooltip.add("Current Owner: " + name);
         }
     }
 

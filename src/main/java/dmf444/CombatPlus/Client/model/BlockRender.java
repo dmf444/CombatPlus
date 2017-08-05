@@ -5,13 +5,12 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 /**
  * Created by David on 04/07/2015.
  */
-public class BlockRender implements IItemRenderer
+/*public class BlockRender implements IItemRenderer
 {
     protected ModelBase model;
     protected String texturelocation;
@@ -81,4 +80,4 @@ public class BlockRender implements IItemRenderer
         GL11.glPopMatrix();
     }
 }
-
+*/

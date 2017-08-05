@@ -21,15 +21,9 @@ public class WirelessHackerRender extends TileEntitySpecialRenderer {
         this.model = new WirelessHackerModel();
     }
 
-    private void adjustRotatePivotViaMeta(World world, int x, int y, int z) {
-        int meta = world.getBlockMetadata(x, y, z);
-        GL11.glPushMatrix();
-        GL11.glRotatef(meta * (-90), 0.0F, 0.0F, 1.0F);
-        GL11.glPopMatrix();
-    }
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
+    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale, int destroyStage) {
         TileSetTurretBase tile = (TileSetTurretBase) te;
         //The PushMatrix tells the renderer to "start" doing something.
         GL11.glPushMatrix();
@@ -77,21 +71,21 @@ public class WirelessHackerRender extends TileEntitySpecialRenderer {
             String percentComplete = DecimalFormat.getPercentInstance().format(((double) tile.getTicks() / 250));
             GL11.glScaled(0.003, 0.003, 0.003);
             //GL11.glEnable(GL11.GL_BLEND);
-            GL11.glTranslated(-275, 285, 44);
+            GL11.glTranslated(190, 285, 44);
             GL11.glRotated(-40, 1, 0, 0);
             GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
-            Minecraft.getMinecraft().fontRenderer.drawString("hacking....", te.xCoord, te.yCoord, te.zCoord);
+            Minecraft.getMinecraft().fontRendererObj.drawString("hacking....", te.getPos().getX(), te.getPos().getY(), 000000);
             GL11.glTranslated(0, 15, -4);
-            Minecraft.getMinecraft().fontRenderer.drawString(String.format("%s done", percentComplete), te.xCoord, te.yCoord, te.zCoord);
+            Minecraft.getMinecraft().fontRendererObj.drawString(String.format("%s done", percentComplete), te.getPos().getX(), te.getPos().getY(), 000000);
             //Tell it to stop rendering for both the PushMatrix's
             GL11.glDisable(GL11.GL_BLEND);
         } else{
             GL11.glScaled(0.003, 0.003, 0.003);
             //GL11.glEnable(GL11.GL_BLEND);
-            GL11.glTranslated(-260, 285, 44);
+            GL11.glTranslated(190, 285, 44);
             GL11.glRotated(-40, 1, 0, 0);
             GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
-            Minecraft.getMinecraft().fontRenderer.drawString("STANDBY", te.xCoord, te.yCoord, te.zCoord);
+            Minecraft.getMinecraft().fontRendererObj.drawString("STANDBY", te.getPos().getX(), te.getPos().getZ(), 0000000);
         }
         GL11.glPopMatrix();
         GL11.glPopMatrix();

@@ -1,27 +1,28 @@
 package dmf444.CombatPlus.Common.blocks;
 
 import dmf444.CombatPlus.Common.TileEntity.TileSetTurretBase;
-import dmf444.CombatPlus.Core.CombatPlus;
-import dmf444.CombatPlus.Core.lib.CPLog;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import dmf444.CombatPlus.CombatPlus;
+import dmf444.CombatPlus.init.ItemRegistry;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialLiquid;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class WirelessHacker extends BlockContainer {
+import javax.annotation.Nullable;
+
+public class WirelessHacker extends BasicBlock {
 
     public WirelessHacker(){
-        super(Material.iron);
-        this.setCreativeTab(CreativeTabs.tabRedstone);
-        this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 0.65f, 0.82f);
+        super(Material.IRON);
+        this.setName("TurretHacker");
+        this.setCreativeTab(CreativeTabs.REDSTONE);
+        //this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 0.65f, 0.82f);
         this.blockHardness = 2.0F;
     }
 
@@ -31,64 +32,21 @@ public class WirelessHacker extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float hitx, float hity, float hitz) {
-        if(player.getCurrentEquippedItem() != null) {
-            TileEntity tile = world.getTileEntity(x, y, z);
-            if (tile instanceof TileSetTurretBase && player.getCurrentEquippedItem().getItem().equals(CombatPlus.hackyCard)) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+        if(player.getHeldItem(hand) != null) {
+            TileEntity tile = world.getTileEntity(pos);
+            if (tile instanceof TileSetTurretBase && player.getHeldItem(hand).getItem().equals(ItemRegistry.TEAM_HACKING_CARD)) {
                 TileSetTurretBase TE = (TileSetTurretBase) tile;
-                TE.addTeamtoAccepted(player.getCurrentEquippedItem());
+                TE.addTeamtoAccepted(player.getHeldItem(hand));
                 return true;
-            } else if(tile instanceof TileSetTurretBase && player.getCurrentEquippedItem().getItem().equals(CombatPlus.hackyCardNormal)){
+            } else if(tile instanceof TileSetTurretBase && player.getHeldItem(hand).getItem().equals(ItemRegistry.HACKING_CARD)){
                 TileSetTurretBase TE = (TileSetTurretBase) tile;
-                TE.cacheStack(player.getCurrentEquippedItem());
+                TE.cacheStack(player.getHeldItem(hand));
                 TE.startHack();
             }
         }
         return false;
     }
 
-    @Override
-    public int getRenderType() {
-        return -1;
-    }
 
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    private void setDefaultDirection(World world, int x, int y, int z, EntityLivingBase entity) {
-        int rotation = MathHelper.floor_double((double) (entity.rotationYaw * 4F / 360F) + 0.5D) & 3;
-
-        if(rotation == 0) {
-            world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-        }
-
-        if(rotation == 1) {
-            world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-        }
-
-        if(rotation == 2) {
-            world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-        }
-
-        if(rotation == 3) {
-            world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-        }
-    }
-
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack Itemstack) {
-
-        super.onBlockAdded(world, x, y, z);
-        this.setDefaultDirection(world, x, y, z, entity);
-
-    }
-
-    public void registerBlockIcons(IIconRegister icon) {
-        this.blockIcon = icon.registerIcon("combatplus:WirelessHackerItem");
-    }
 }
