@@ -1,7 +1,6 @@
 package dmf444.CombatPlus.Common.blocks;
 
 import dmf444.CombatPlus.Common.TileEntity.TileSetTurretBase;
-import dmf444.CombatPlus.CombatPlus;
 import dmf444.CombatPlus.init.ItemRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -11,18 +10,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class WirelessHacker extends BasicBlock {
+public class BlockTurretHacker extends BasicBlock {
 
-    public WirelessHacker(){
+    public BlockTurretHacker(){
         super(Material.IRON);
         this.setName("TurretHacker");
         this.setCreativeTab(CreativeTabs.REDSTONE);
-        //this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 0.65f, 0.82f);
         this.blockHardness = 2.0F;
     }
 
@@ -42,11 +42,23 @@ public class WirelessHacker extends BasicBlock {
             } else if(tile instanceof TileSetTurretBase && player.getHeldItem(hand).getItem().equals(ItemRegistry.HACKING_CARD)){
                 TileSetTurretBase TE = (TileSetTurretBase) tile;
                 TE.cacheStack(player.getHeldItem(hand));
-                TE.startHack();
+                TE.startHacking();
             }
         }
         return false;
     }
 
+    @Override
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+        return new AxisAlignedBB(0.2f, 0.0f, 0.2f, 0.8f, 0.65f, 0.82f);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return new AxisAlignedBB(0.2f, 0.0f, 0.2f, 0.8f, 0.65f, 0.82f);
+    }
 
 }

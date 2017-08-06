@@ -5,18 +5,29 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by David on 2017-08-01.
  */
 public class ModelRegistry {
 
+    @SideOnly(Side.CLIENT)
     public static void loadModels() {
-        registerModel(BlockRegistry.CREATIVE_WIRELESS_ENERGY);
+        registerModel(BlockRegistry.ENERGY_CREATOR);
+        registerModel(BlockRegistry.HACK_INTERCEPTOR);
+
+
+        registerModel(ItemRegistry.EXPLOSIVE_CARD);
+        registerModel(ItemRegistry.HACKING_CARD);
+        registerModel(ItemRegistry.TEAM_HACKING_CARD);
+        registerModel(ItemRegistry.UPGRADE_CARD);
 
     }
 
 
+    @SideOnly(Side.CLIENT)
     public static void registerModel(Object obj){
         Item item = null;
         ResourceLocation name = null;

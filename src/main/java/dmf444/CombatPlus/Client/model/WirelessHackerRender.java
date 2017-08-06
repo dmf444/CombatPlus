@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import java.text.DecimalFormat;
@@ -55,7 +54,7 @@ public class WirelessHackerRender extends TileEntitySpecialRenderer {
         GL11.glRotatef((float)short1, 0.0F, 1.0F, 0.0F);
         //Use in 1.6.2  this
         //Use in 1.6.2  this
-        ResourceLocation textures = (new ResourceLocation("combatplus:textures/blocks/WirelessHacker.png"));
+        ResourceLocation textures = (new ResourceLocation("combatplus:textures/blocks/blockturrethacker.png"));
         //the ':' is very important
         //binding the textures
         Minecraft.getMinecraft().renderEngine.bindTexture(textures);
@@ -67,25 +66,23 @@ public class WirelessHackerRender extends TileEntitySpecialRenderer {
         this.model.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
         GL11.glPushMatrix();
-        if(tile.getHack()) {
-            String percentComplete = DecimalFormat.getPercentInstance().format(((double) tile.getTicks() / 250));
+        if(tile.isHacking()) {
+            String percentComplete = DecimalFormat.getPercentInstance().format(((double) (tile.getTicks() + 50 * tile.getTotalComplete())/ 250));
+
             GL11.glScaled(0.003, 0.003, 0.003);
-            //GL11.glEnable(GL11.GL_BLEND);
-            GL11.glTranslated(190, 285, 44);
+            GL11.glTranslated(2, 75, 221);
             GL11.glRotated(-40, 1, 0, 0);
             GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
-            Minecraft.getMinecraft().fontRendererObj.drawString("hacking....", te.getPos().getX(), te.getPos().getY(), 000000);
-            GL11.glTranslated(0, 15, -4);
-            Minecraft.getMinecraft().fontRendererObj.drawString(String.format("%s done", percentComplete), te.getPos().getX(), te.getPos().getY(), 000000);
-            //Tell it to stop rendering for both the PushMatrix's
-            GL11.glDisable(GL11.GL_BLEND);
+            Minecraft.getMinecraft().fontRendererObj.drawString("hacking....", -60, 350, 000000);
+            GL11.glTranslated(0, 12, 0);
+            Minecraft.getMinecraft().fontRendererObj.drawString(String.format("%s done", percentComplete), -60, 350, 000000);
+
         } else{
             GL11.glScaled(0.003, 0.003, 0.003);
-            //GL11.glEnable(GL11.GL_BLEND);
-            GL11.glTranslated(190, 285, 44);
+            GL11.glTranslated(0, 85, 210);
             GL11.glRotated(-40, 1, 0, 0);
             GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
-            Minecraft.getMinecraft().fontRendererObj.drawString("STANDBY", te.getPos().getX(), te.getPos().getZ(), 0000000);
+            Minecraft.getMinecraft().fontRendererObj.drawString("STANDBY", -60, 350, 0000000);
         }
         GL11.glPopMatrix();
         GL11.glPopMatrix();

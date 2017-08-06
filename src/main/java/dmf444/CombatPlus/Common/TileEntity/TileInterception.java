@@ -1,56 +1,43 @@
 package dmf444.CombatPlus.Common.TileEntity;
 
-import cofh.api.energy.IEnergyHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import omtteam.openmodularturrets.tileentity.TurretBase;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 public class TileInterception extends TileEntity implements ITickable{
 
     Chunk chuck;
-    private static EntityPlayer owner;
-    private static World world;
-    private static boolean intercept;
-    private static boolean explodeHacker;
+    private String owner;
+    private boolean intercept;
+    private boolean explodeHacker;
 
     public TileInterception() {
-        world = this.getWorld();
+
     }
 
-    public static void setOwner(String player){
-        List players = world.playerEntities;
-        for(int i = 0; i <= players.size(); i++){
-            EntityPlayer player1 = (EntityPlayer) players.get(i);
-            if(player1.getName() == player){
-                owner = player1;
-            }
-        }
+    public void setOwner(String player){
+        if(getWorld().getPlayerEntityByName(player) != null)
+            owner = getWorld().getPlayerEntityByName(player).getUniqueID().toString();
     }
 
-    public static EntityPlayer getOwner(){
+    public String getOwner(){
         return owner;
     }
 
-    public static void setIntercept(boolean interceptz) {
+    public void setIntercept(boolean interceptz) {
         intercept = interceptz;
     }
 
-    public static boolean getIntercept() {
+    public boolean getIntercept() {
         return intercept;
     }
 
-    public static boolean getExposions() {
+    public boolean getExposions() {
         return explodeHacker;
     }
 
@@ -62,23 +49,21 @@ public class TileInterception extends TileEntity implements ITickable{
 
         while(iterator.hasNext()) {
             TileEntity tileEntity = (TileEntity) iterator.next();
-            if(tileEntity instanceof TurretBase){
-                if(tileEntity instanceof TileSetTurretBase){
-                    TileSetTurretBase handler = (TileSetTurretBase) tileEntity;
-                    if(handler.getHack() && !this.intercept) {
-                        new TextComponentTranslation("WARNING: %s, Wireless hacker found at x:" + handler.getPos().getX() + " y: " + handler.getPos().getY() + " z: " + handler.getPos().getZ(), new Object[] {getOwner().getDisplayNameString()});
-                    }else if(handler.getHack() && this.intercept){
-                        handler.stopHack();
-                    } else if(handler.getHack() && this.explodeHacker){
-                        handler.EXPLODE(owner);
-                    }
+            if(tileEntity instanceof TileSetTurretBase){
+                TileSetTurretBase handler = (TileSetTurretBase) tileEntity;
+                if(handler.isHacking() && !this.intercept) {
+                    new TextComponentTranslation("WARNING: %s, Wireless hacker found at x:" + handler.getPos().getX() + " y: " + handler.getPos().getY() + " z: " + handler.getPos().getZ(), getWorld().getPlayerEntityByUUID(UUID.fromString(getOwner())));
+                }else if(handler.isHacking() && this.intercept){
+                    handler.stopHacking();
+                } else if(handler.isHacking() && this.explodeHacker){
+                    handler.explodeDevice();
                 }
             }
         }
     }
 
 
-    public static void allowExplosions() {
+    public void allowExplosions() {
         explodeHacker = true;
     }
 }

@@ -28,8 +28,10 @@ minecraft {
 }
 
 dependencies {
-    compile files("libs/openmodularturrets-1.10.2-3.0.0-90.jar")
-    compile files("libs/omlib-1.10.2-3.0.0-60.jar")
+    compile files("libs/openmodularturrets-1.10.2-3.0.0-108.jar")
+    compile files("libs/omlib-1.10.2-3.0.0-61.jar")
+	compile files("libs/OpenComputers-MC1.10.2-1.6.2.113-dev-api.jar")
+	compile files("libs/industrialcraft-2-2.6.252-ex110.jar")
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"

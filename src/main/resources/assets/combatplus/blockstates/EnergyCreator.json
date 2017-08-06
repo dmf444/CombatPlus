@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "normal": { "model": "combatplus:redstone_heater" },
+    "facing=north": { "model": "combatplus:redstone_heater" },
+    "facing=south": { "model": "combatplus:redstone_heater", "y": 180 },
+    "facing=west":  { "model": "combatplus:redstone_heater", "y": 270 },
+    "facing=east":  { "model": "combatplus:redstone_heater", "y": 90 },
+    "facing=down":  { "model": "combatplus:redstone_heater", "x": 90 },
+    "facing=up":    { "model": "combatplus:redstone_heater", "x": 270 }
+  }
+}

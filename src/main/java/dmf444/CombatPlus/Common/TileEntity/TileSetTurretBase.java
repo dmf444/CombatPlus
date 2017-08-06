@@ -2,55 +2,76 @@ package dmf444.CombatPlus.Common.TileEntity;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.TileEnergyHandler;
-import dmf444.CombatPlus.CombatPlus;
 import dmf444.CombatPlus.Core.lib.CPLog;
 import dmf444.CombatPlus.init.ItemRegistry;
-import net.minecraft.entity.player.EntityPlayer;
+import java.util.Iterator;
+import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import omtteam.openmodularturrets.tileentity.TurretBase;
-
-
-import java.util.Iterator;
-import java.util.Map;
 
 
 public class TileSetTurretBase extends TileEnergyHandler implements ITickable {
 
-    private int Ticks;
-    private static boolean Hack;
+    private int ticks;
+    private boolean hack;
     private int totalComplete;
-    private static ItemStack cacheItem;
+    private ItemStack cacheItem;
 
 
     public TileSetTurretBase(){
-        Hack = false;
+        hack = false;
         this.storage = new EnergyStorage(40000);
     }
 
     public void update(){
-        if(Hack && this.storage.getEnergyStored() >= 1500){
+        if (hack && this.storage.getEnergyStored() >= 1500) {
+            if(!getWorld().isRemote) {
+                this.ticks++;
+                this.extractEnergy(EnumFacing.DOWN, 1500, false);
+                CPLog.fatal(ticks);
+                if (ticks >= 50) {
+                    totalComplete += 1;
+                    ticks = 0;
 
-            this.Ticks++;
-            this.extractEnergy(EnumFacing.DOWN, 1500, false);
-            CPLog.fatal(Ticks);
-            if(Ticks >= 50){
-                totalComplete += 1;
-                Ticks = 0;
-
-                if(totalComplete >= 5){
-                    this.Hack = false;
-                    this.totalComplete = 0;
-                    this.Ticks = 0;
-                    addTeamtoAccepted(cacheItem);
+                    if (totalComplete >= 5) {
+                        this.hack = false;
+                        this.totalComplete = 0;
+                        this.ticks = 0;
+                        addTeamtoAccepted(cacheItem);
+                    }
                 }
             }
+            getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
         }
     }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        NBTTagCompound syncData = new NBTTagCompound();
+        syncData.setInteger("ticks", this.getTicks());
+        syncData.setBoolean("isHacking", this.isHacking());
+        syncData.setInteger("complete", this.totalComplete);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, syncData);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity pkt)
+    {
+        this.ticks = pkt.getNbtCompound().getInteger("ticks");
+        this.totalComplete = pkt.getNbtCompound().getInteger("complete");
+        this.hack = pkt.getNbtCompound().getBoolean("isHacking");
+    }
+
 
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
@@ -59,13 +80,13 @@ public class TileSetTurretBase extends TileEnergyHandler implements ITickable {
         else
             return -1;
     }
-    public static void cacheStack(ItemStack stack){
+    public void cacheStack(ItemStack stack){
         cacheItem = stack;
     }
-    public static void startHack(){
-        Hack = true;
+    public void startHacking(){
+        hack = true;
     }
-    public static boolean getHack(){return Hack;}
+    public boolean isHacking(){return hack;}
 
     public void addTeamtoAccepted(ItemStack items){
         if((items.getItem()).equals(ItemRegistry.TEAM_HACKING_CARD)) {
@@ -111,6 +132,7 @@ public class TileSetTurretBase extends TileEnergyHandler implements ITickable {
         tile.getTrustedPlayer(name).setAdmin(true);
         tile.getTrustedPlayer(name).setCanChangeTargeting(true);
         tile.getTrustedPlayer(name).setCanOpenGUI(true);
+        tile.setOwner(getWorld().getPlayerEntityByName(name).getUniqueID().toString());
     }
 
     private void removeTrustedPlayers(TurretBase tile){
@@ -122,14 +144,15 @@ public class TileSetTurretBase extends TileEnergyHandler implements ITickable {
         }
     }
 
-    public void stopHack() {
-        Hack = false;
+    public void stopHacking() {
+        hack = false;
     }
 
-    public void EXPLODE(EntityPlayer player) {
-        worldObj.createExplosion(player, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 2.0F, true);
+    public void explodeDevice() {
+        getWorld().createExplosion(null, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 2.0F, true);
     }
     public int getTicks(){
-        return Ticks;
+        return ticks;
     }
+    public int getTotalComplete() {return this.totalComplete;}
 }

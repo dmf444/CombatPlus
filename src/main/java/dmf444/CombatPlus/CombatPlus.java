@@ -2,22 +2,15 @@ package dmf444.CombatPlus;
 
 
 import dmf444.CombatPlus.Common.GuiHandler;
-import dmf444.CombatPlus.Common.ItemCardChangerCreative;
-import dmf444.CombatPlus.Common.ItemCardChangerNormal;
-import dmf444.CombatPlus.Common.TileEntity.*;
-import dmf444.CombatPlus.Common.blocks.*;
 import dmf444.CombatPlus.Core.ConfigHandler;
+import dmf444.CombatPlus.Core.lib.ModInfo;
 import dmf444.CombatPlus.init.BlockRegistry;
 import dmf444.CombatPlus.init.ItemRegistry;
 import dmf444.CombatPlus.proxy.CommonProxy;
-import dmf444.CombatPlus.Core.lib.ModInfo;
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -46,10 +39,6 @@ public class CombatPlus {
     {
         ConfigHandler.init(event.getSuggestedConfigurationFile());
 
-
-        MinecraftForge.EVENT_BUS.register(new BlockRegistry());
-        MinecraftForge.EVENT_BUS.register(new ItemRegistry());
-
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
         proxy.registerItemModels();
@@ -61,10 +50,9 @@ public class CombatPlus {
     @Mod.EventHandler
     public void load(FMLInitializationEvent event)
     {
-       // public static Item explodeCard;
 
         proxy.registerRenderers();
-}
+    }
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event)

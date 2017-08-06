@@ -1,0 +1,11 @@
+{
+  "multipart": [
+    {   "apply": { "model": "combatplus:interceptor_model" }},
+    {   "when": { "explosive": "true" },
+      "apply": { "model": "combatplus:interceptor_explosive_model"}
+    },
+    {   "when": { "interception": "true" },
+      "apply": { "model": "combatplus:interceptor_defence_model"}
+    }
+  ]
+}

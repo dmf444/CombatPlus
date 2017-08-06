@@ -7,4 +7,4 @@ tile.EnergyCreator.name=Redstone Energy Producer
 item.CreativeChangerCard.name=Creative Hacking Card
 item.NormalChangerCard.name=Hacking Card
 item.disableCard.name=Upgrade - Disable
-item.explosiveInterception.name=Upgrade - Explosion
+item.explosiveCard.name=Upgrade - Explosion

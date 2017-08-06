@@ -1,0 +1,20 @@
+{
+  "textures": {
+    "4": "combatplus:items/interceptionupgrade"
+  },
+  "elements": [
+    {
+      "name": "intercept_upgrade",
+      "from": [ 8.5, 2.0, 2.0 ],
+      "to": [ 10.5, 4.0, 2.5 ],
+      "faces": {
+        "north": { "texture": "#4", "uv": [ 2.0, 2.0, 14.0, 14.0 ] },
+        "east": { "texture": "#4", "uv": [ 14.0, 2.0, 14.5, 4.0 ] },
+        "south": { "texture": "#4", "uv": [ 13.0, 1.0, 14.0, 2.0 ] },
+        "west": { "texture": "#4", "uv": [ 14.0, 2.0, 14.5, 4.0 ] },
+        "up": { "texture": "#4", "uv": [ 9.0, 1.0, 11.0, 1.5 ] },
+        "down": { "texture": "#4", "uv": [ 11.0, 1.0, 13.0, 1.5 ] }
+      }
+    }
+    ]
+}

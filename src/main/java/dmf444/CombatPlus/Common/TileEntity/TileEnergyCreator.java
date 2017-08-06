@@ -1,7 +1,6 @@
 package dmf444.CombatPlus.Common.TileEntity;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.TileEnergyHandler;
 import dmf444.CombatPlus.Core.ConfigHandler;
@@ -13,11 +12,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public class TileEnergyCreator extends TileEnergyHandler implements ISidedInventory, ITickable{
@@ -76,7 +75,7 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
         ticks++;
 
         if(ticks == TICKS_TO_WAIT) {
-            if (worldObj.getBlockState(this.getPos().down()).getBlock() == Blocks.LAVA && this.storage.getEnergyStored() < 50000) {
+            if (getWorld().getBlockState(this.getPos().down()).getBlock() == Blocks.LAVA && this.storage.getEnergyStored() < 50000) {
                 int Type = testItems(this.inv[0]);
                 if (Type != EMPTY) {
                     if (Type == REDSTONE) {
@@ -108,8 +107,8 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
             }
             ticks = 0;
         }
-        if(worldObj.getTileEntity(pos.up()) instanceof IEnergyReceiver && this.storage.getEnergyStored() > 1500){
-            IEnergyReceiver handler = (IEnergyReceiver) worldObj.getTileEntity(getPos().up());
+        if(getWorld().getTileEntity(pos.up()) instanceof IEnergyReceiver && this.storage.getEnergyStored() > 1500){
+            IEnergyReceiver handler = (IEnergyReceiver) getWorld().getTileEntity(getPos().up());
             handler.receiveEnergy(EnumFacing.DOWN, 1500, false);
             this.storage.extractEnergy(1500, false);
         }
@@ -156,6 +155,7 @@ public class TileEnergyCreator extends TileEnergyHandler implements ISidedInvent
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity pkt)
     {
         storage.setEnergyStored(pkt.getNbtCompound().getInteger("Storage"));
