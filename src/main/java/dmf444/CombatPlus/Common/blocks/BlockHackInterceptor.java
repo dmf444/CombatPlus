@@ -40,14 +40,13 @@ public class BlockHackInterceptor extends BasicBlock {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
         if(player.getHeldItem(hand) != null) {
-            TileInterception interceptor = (TileInterception) world.getTileEntity(pos);
-            if (player.getHeldItem(hand).getItem().equals(ItemRegistry.UPGRADE_CARD) && !interceptor.getIntercept() && !interceptor.getExposions()) {
+            boolean isIntercepting = state.getValue(BlockHackInterceptor.INTERCEPTION);
+            boolean isExplosive = state.getValue(BlockHackInterceptor.EXPLOSIVE);
+            if (player.getHeldItem(hand).getItem().equals(ItemRegistry.UPGRADE_CARD) && !isIntercepting && !isExplosive) {
                 world.setBlockState(pos, state.withProperty(INTERCEPTION, true));
                 world.notifyBlockUpdate(pos, state, state.withProperty(INTERCEPTION, true), 3);
-                interceptor.setIntercept(true);
                 return true;
-            } else if (player.getHeldItem(hand).getItem().equals(ItemRegistry.EXPLOSIVE_CARD) && interceptor.getIntercept() && !interceptor.getExposions()) {
-                interceptor.allowExplosions();
+            } else if (player.getHeldItem(hand).getItem().equals(ItemRegistry.EXPLOSIVE_CARD) && isIntercepting && !isExplosive) {
                 world.setBlockState(pos, state.withProperty(EXPLOSIVE, true));
                 world.notifyBlockUpdate(pos, state, state.withProperty(EXPLOSIVE, true), 3);
                 return true;

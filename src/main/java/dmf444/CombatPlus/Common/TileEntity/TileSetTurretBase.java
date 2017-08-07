@@ -149,7 +149,7 @@ public class TileSetTurretBase extends TileEnergyHandler implements ITickable {
     }
 
     public void explodeDevice() {
-        getWorld().createExplosion(null, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 2.0F, true);
+        getWorld().createExplosion(getWorld().getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 100, true), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 1.0F, true);
     }
     public int getTicks(){
         return ticks;

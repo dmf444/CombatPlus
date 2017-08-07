@@ -17,6 +17,9 @@ public class ModelRegistry {
     public static void loadModels() {
         registerModel(BlockRegistry.ENERGY_CREATOR);
         registerModel(BlockRegistry.HACK_INTERCEPTOR);
+        registerModel(BlockRegistry.CREATIVE_WIRELESS_ENERGY);
+        registerModel(BlockRegistry.TURRET_HACKER);
+        registerModel(BlockRegistry.WIRELESS_ENERGY);
 
 
         registerModel(ItemRegistry.EXPLOSIVE_CARD);

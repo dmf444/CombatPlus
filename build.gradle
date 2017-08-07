@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.0.2"
+version = "1.10.2-1.0.3"
 group= "dmf444.CombatPlus" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "CombatPlus"
 
