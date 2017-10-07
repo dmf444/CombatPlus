@@ -57,9 +57,9 @@ public class CombatPlus {
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event)
     {
-        GameRegistry.addShapelessRecipe(new ItemStack(ItemRegistry.HACKING_CARD), new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(getItem("ioBus")), new ItemStack(getItem("chamberTierTwo")), new ItemStack(Items.NAME_TAG));
-        GameRegistry.addShapedRecipe(new ItemStack(BlockRegistry.TURRET_HACKER), new Object[] {"obo", "rsr", "oro", 'o', new ItemStack(Items.GOLD_INGOT), 'r', new ItemStack(getItem("ioBus")), 'b', new ItemStack(getItem("baseTierWood")), 's', new ItemStack(getItem("sensorTierFourItem"))});
-        GameRegistry.addShapedRecipe(new ItemStack(BlockRegistry.WIRELESS_ENERGY), new Object[]{"iei", "d d", "iei", 'i', new ItemStack(Items.IRON_INGOT), 'e', new ItemStack(getItem("chamberTierThree")), 'd', new ItemStack(Items.DIAMOND)});
+        GameRegistry.addShapelessRecipe(new ItemStack(ItemRegistry.HACKING_CARD), new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(getItem("intermediate_regular")), new ItemStack(getItem("intermediate_tiered"),1, 6), new ItemStack(Items.NAME_TAG));
+        GameRegistry.addShapedRecipe(new ItemStack(BlockRegistry.TURRET_HACKER), new Object[] {"obo", "rsr", "oro", 'o', new ItemStack(Items.GOLD_INGOT), 'r', new ItemStack(getItem("intermediate_regular")), 'b', new ItemStack(getItem("turret_base"), 1, 0), 's', new ItemStack(getItem("intermediate_tiered"), 1, 3)});
+        GameRegistry.addShapedRecipe(new ItemStack(BlockRegistry.WIRELESS_ENERGY), new Object[]{"iei", "d d", "iei", 'i', new ItemStack(Items.IRON_INGOT), 'e', new ItemStack(getItem("intermediate_tiered"), 1, 7), 'd', new ItemStack(Items.DIAMOND)});
         GameRegistry.addShapedRecipe(new ItemStack(BlockRegistry.HACK_INTERCEPTOR), new Object[]{"c t", "eis", "yry", 'c', new ItemStack(Items.COMPARATOR), 't', new ItemStack(Blocks.TORCH), 'e', new ItemStack(Items.REPEATER), 'i', new ItemStack(Items.IRON_INGOT), 's', new ItemStack(Items.STICK), 'y', new ItemStack(Blocks.STONE_SLAB, 1, 0), 'r', new ItemStack(Items.REDSTONE)});
         GameRegistry.addShapedRecipe(new ItemStack(ItemRegistry.UPGRADE_CARD), new Object[]{"pdp", "prp", "pdp", 'p', new ItemStack(Items.PAPER), 'd', new ItemStack(Items.DYE, 1, 1), 'r', new ItemStack(Items.REPEATER)});
         GameRegistry.addShapedRecipe(new ItemStack(ItemRegistry.EXPLOSIVE_CARD), new Object[]{"pdp", "dtd", "pdp", 'p', new ItemStack(Items.PAPER), 'd', new ItemStack(Items.DIAMOND), 't', new ItemStack(Blocks.TNT)});
